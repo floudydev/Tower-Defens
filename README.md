@@ -92,7 +92,7 @@ Once the game is loaded, you can start playing by selecting turrets and placing 
 
 ### Monsters 👹
 
-Monsters are the primary enemies in the game. Each monster has unique attributes such as health, speed, abilities, and a multiplier for the cash reward. The monsters are defined in the [monstersConfig.json](http://_vscodecontentref_/1) file.
+Monsters are the primary enemies in the game. Each monster has unique attributes such as health, speed, abilities, and a multiplier for the cash reward. The monsters are defined in the [monstersConfig.json](http://_vscodecontentref_/1) file and in game.js.
 
 - **Goblin**
   - Health: 100
