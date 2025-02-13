@@ -1,0 +1,98 @@
+{
+    "monsters": {
+        "Goblin": {
+            "health": 100,
+            "speed": 2,
+            "abilities": [
+                "fast"
+            ],
+            "img": "goblin.jpg",
+            "multiplier": 1.5
+        },
+        "Orc": {
+            "health": 350,
+            "speed": 1,
+            "abilities": [
+                "strong"
+            ],
+            "img": "orc.jpg",
+            "multiplier": 2.3
+        },
+        "Troll": {
+            "health": 300,
+            "speed": 1,
+            "abilities": [
+                "regenerate"
+            ],
+            "img": "troll.jpg",
+            "multiplier": 1.8
+        },
+        "Vampire": {
+            "health": 150,
+            "speed": 3,
+            "abilities": [
+                "shield"
+            ],
+            "img": "vampire.jpg",
+            "multiplier": 2.7
+        },
+        "Werewolf": {
+            "health": 250,
+            "speed": 2,
+            "abilities": [
+                "transform",
+                "fast"
+            ],
+            "img": "werewolf.jpg",
+            "multiplier": 2.0
+        },
+        "Zombie": {
+            "health": 120,
+            "speed": 0.5,
+            "abilities": [
+                "infect"
+            ],
+            "img": "zombie.jpg",
+            "multiplier": 1.2
+        },
+        "Skeleton": {
+            "health": 80,
+            "speed": 1.5,
+            "abilities": [
+                "lowHp"
+            ],
+            "img": "skeleton.jpg",
+            "multiplier": 1.0
+        }
+    },
+    "bosses": {
+        "Dragon": {
+            "health": 1000,
+            "speed": 1,
+            "abilities": [
+                "fireBreath"
+            ],
+            "img": "dragon.jpg",
+            "multiplier": 2.5
+        },
+        "Giant": {
+            "health": 1500,
+            "speed": 0.5,
+            "abilities": [
+                "strong"
+            ],
+            "img": "giant.jpg",
+            "multiplier": 2.8
+        },
+        "Hydra": {
+            "health": 2000,
+            "speed": 0.8,
+            "abilities": [
+                "regenerateHeads",
+                "poisonBreath"
+            ],
+            "img": "hydra.jpg",
+            "multiplier": 2.9
+        }
+    }
+}

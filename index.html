@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Tower Defense Game</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono">
+    <link rel="stylesheet" href="./styles/index.css">
+    <style>
+        #turrets-start-choice a.selected {
+            border: 2px solid yellow;
+        }
+    </style>
+</head>
+
+<body style="background-color:black;">
+    <h1 style="all:unset; position:absolute; left:75%; font-size:20px; color:#fff;">Tower Defense Game</h1>
+
+    <div id="control-right">
+        <div id="control-right-1" style="position:absolute; left:63%; top:140px; color:#fff;">
+            <p style="position: inherit; left: 30px;">Next wave</p>
+            <a id="control-timer"></a>
+            <p style="position: absolute; left: 30px;">Speed</p>
+            <a id="control-fast"></a>
+        </div>
+
+        <h2 style="position:absolute; left:65%; top:60px; color:#fff;">Stats</h2>
+        <div id="control-right-2" style="position:absolute; left:63%; top:60px; color:#fff;">
+            Cash $<span id="control-cash">250</span><br>
+            Lives <span id="control-lives">10</span><br>
+            Wave #<span id="control-wave">1</span>
+        </div>
+
+        <h2 style="position:absolute; left:72%; top:60px; color:#fff;">Control</h2>
+        <div id="control-right-3" style="position:absolute; left:70%; top:60px; color:#fff;">
+            <span id="control-fps">60</span>FPS<br>
+            <a id="control-pause">Pause</a><br>
+            <a href="">Reset</a>
+        </div>
+    </div>
+
+    <div id="pages">
+        <canvas id="pages-canvas" width="800" height="500" style="border:5px solid #fff;"></canvas>
+
+        <div id="pages-overlay"></div>
+
+        <div id="pages-start" style="border:5px solid #fff;">
+            <div id="turrets-start-choice" style="position: absolute; font-size: 13px; display: block;">
+                <!-- Турели будут добавлены динамически через JavaScript -->
+            </div>
+
+            <div id="pages-start-maps" style="display: none;">
+                <a><img src="images/maps/loopy.png" width="80" height="50">Loopy</a>
+                <a><img src="images/maps/backtrack.png" width="80" height="50">Backtrack</a>
+                <a><img src="images/maps/dash.png" width="80" height="50">Dash</a>
+            </div>
+
+            <div id="pages-start-info">
+                <h2>Instructions</h2>
+                <p>Build and upgrade turrets (which costs money and increases score) to kill creeps (which generates
+                    money and increases score). Experiment with the turrets; each has a special ability when fully
+                    upgraded.</p>
+
+                <h2>Shortcuts</h2>
+                <dl>
+                    <dt><kbd>1</kbd></dt>
+                    <dd>Upgrade damage</dd>
+
+                    <dt><kbd>2</kbd></dt>
+                    <dd>Upgrade rate</dd>
+
+                    <dt><kbd>3</kbd></dt>
+                    <dd>Upgrade range</dd>
+
+                    <dt><kbd>4</kbd></dt>
+                    <dd>Move</dd>
+
+                    <dt><kbd>*</kbd></dt>
+                    <dd>Sell</dd>
+
+                    <dt><kbd>=</kbd></dt>
+                    <dd>Fast forward</dd>
+
+                    <dt><kbd>Esc</kbd></dt>
+                    <dd>Deselect / Cancel / Pause</dd>
+
+                    <dt><kbd>Enter</kbd></dt>
+                    <dd>Send wave</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div id="pages-scores">
+            <h3>Loopy</h3>
+            <h3>Backtrack</h3>
+            <h3>Dash</h3>
+
+            <ul id="pages-scores-local-loopy"></ul>
+            <ul id="pages-scores-local-backtrack"></ul>
+            <ul id="pages-scores-local-dash"></ul>
+
+            <a data-page="" id="pages-scores-back">←</a>
+        </div>
+    </div>
+
+    <div id="control" style="border:5px solid #fff;">
+        <div id="control-left">
+            <div id="control-turrets" style="display: block;">
+
+            </div>
+
+            <div id="control-manage">
+                <a id="control-manage-damage"></a>
+                <a id="control-manage-rate"></a>
+                <a id="control-manage-range"></a>
+                <a id="control-manage-move">Move<br>$90</a>
+                <a id="control-manage-sell"></a>
+                <a id="control-manage-multipleBullets" onclick="ui.action.upgrade('multipleBullets')">Multiple
+                    Bullets<br>$10,000</a>
+                <div id="control-manage-stats"></div>
+            </div>
+
+            <div id="control-score">
+                Game over! You scored <span id="control-score-text"></span>.<br><br>
+                <a href="">Play again</a> or <a data-page="scores">view scores</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/defs.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const turretsStartChoice = document.getElementById("turrets-start-choice");
+            const controlTurrets = document.getElementById("control-turrets");
+            const pagesStartMaps = document.getElementById("pages-start-maps");
+            const selectedTurrets = [];
+
+            function getTurretsData() {
+                return {
+                    "Laser": { cost: Defs.turrets.Laser.cost, img: "laser.png" },
+                    "Missile": { cost: Defs.turrets.Missile.cost, img: "missile.png" },
+                    "Tazer": { cost: Defs.turrets.Tazer.cost, img: "tazer.png" },
+                    "Mortar": { cost: Defs.turrets.Mortar.cost, img: "mortar.png" },
+                    "Turel": { cost: Defs.turrets.Turel.cost, img: "turel.png" },
+                    "Engineer": { cost: Defs.turrets.Engineer.cost, img: "engineer.png" },
+                    "Medic": { cost: Defs.turrets.Medic.cost, img: "medic.png" },
+                    "Rocketlauncher": { cost: Defs.turrets.Rocketlauncher.cost, img: "rocketlauncher.png" },
+                    "Sniper": { cost: Defs.turrets.Sniper.cost, img: "sniper.png" }
+                };
+            }
+
+            function populateTurretsStartChoice() {
+                const turretsData = getTurretsData();
+                turretsStartChoice.innerHTML = "";
+                for (const [name, data] of Object.entries(turretsData)) {
+                    const turretElement = document.createElement("a");
+                    turretElement.setAttribute("data-name", name);
+                    turretElement.style.marginBottom = "20px";
+                    turretElement.style.display = "flex";
+                    turretElement.style.alignItems = "center";
+                    turretElement.innerHTML = `<img src="images/turrets/${data.img}" width="25" height="25" style="margin-right: 5px;">${name} ($${data.cost})<br>`;
+                    turretsStartChoice.appendChild(turretElement);
+                }
+            }
+
+            populateTurretsStartChoice();
+
+            turretsStartChoice.addEventListener("click", function (event) {
+                const target = event.target.closest("a");
+                if (!target) return;
+
+                const turretName = target.getAttribute("data-name");
+
+                if (selectedTurrets.includes(turretName)) {
+                    selectedTurrets.splice(selectedTurrets.indexOf(turretName), 1);
+                    target.classList.remove("selected");
+                } else if (selectedTurrets.length < 5) {
+                    selectedTurrets.push(turretName);
+                    target.classList.add("selected");
+                }
+
+                if (selectedTurrets.length === 5) {
+                    turretsStartChoice.style.display = "none";
+                    pagesStartMaps.style.display = "block";
+
+                    const turretsData = getTurretsData();
+                    controlTurrets.innerHTML = "";
+                    selectedTurrets.forEach(function (turret) {
+                        const turretData = turretsData[turret];
+                        const turretElement = document.createElement("a");
+                        turretElement.setAttribute("data-name", turret);
+                        turretElement.innerHTML = `<img src="images/turrets/${turretData.img}" width="25" height="25"><br>${turret} ($${turretData.cost})`;
+                        controlTurrets.appendChild(turretElement);
+                    });
+
+                    // Добавляем обработчик событий для новых турелей
+                    controlTurrets.querySelectorAll("a").forEach(function (turretElement) {
+                        turretElement.addEventListener("click", function () {
+                            const turretName = this.getAttribute("data-name");
+                            console.log("Turret selected:", turretName);
+                            ui.action.build(turretName); // Используем функцию ui.action.build для обработки выбора турели
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
