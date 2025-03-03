@@ -95,6 +95,9 @@ var game = {
 
 	turrets: [],
 	spent: 0,
+	bossesKilled: 0,
+	wavesCompleted: 0,
+	totalDamageDealt: 0,
 	kills: 0,
 	cash: 500000, // Изменено на 100
 	selection: false,
@@ -340,6 +343,15 @@ var game = {
 			localStorage.scores = JSON.stringify(top);
 			ui.action.scores();
 		}
+
+		var overlayContent = $("overlay-content");
+		overlayContent.innerHTML = `
+			<h1>Game Over</h1>
+			<p>Score: ${score}</p>
+			<p>Kills: ${kills}</p>
+			<p>Spent: $${spent}</p>
+			<button id="overlay-button"onclick="location.reload()">Play Again</button>
+		`;
 
 		$("pages-overlay").style.display = "block";
 	}

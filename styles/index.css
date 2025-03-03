@@ -284,6 +284,38 @@ ul {
     display: none;
 }
 
+#overlay-content {
+    color: white;
+    text-align: center;
+    padding-top: 200px;
+    font-family: 'Droid Sans Mono', monospace;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 5px solid #fff;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+#overlay-button {
+    background-color: #00F;
+    color: #FFF;
+    border: 2px solid #FFF;
+    padding: 10px 20px;
+    font-family: 'Droid Sans Mono', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+#overlay-button:hover {
+    background-color: #0056b3;
+}
+
 
 /*****************************************************************************/
 /* Scores page
@@ -443,5 +475,6 @@ ul {
     border-width: 1px;
     margin: 25px;
     min-width: 60px;
-    padding: 0 45px 0 0; /* Increased padding for more space inside */
+    padding: 0 45px 0 0;
+    /* Increased padding for more space inside */
 }
